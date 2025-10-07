@@ -33,35 +33,45 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+<script>
+import { useQuasar } from 'quasar'
+import { ref } from 'vue'
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
+export default {
+  setup () {
+    const $q = useQuasar()
+
+    const name = ref(null)
+    const age = ref(null)
+    const accept = ref(false)
+    return {
+      name,
+      age,
+      accept,
+      onSubmit () {
+        if (accept.value !== true) {
+          $q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: 'You need to accept the license and terms first'
+          })
+        }
+        else {
+          $q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Submitted'
+          })
+        }
+      },
+      onReset () {
+        name.value = null
+        age.value = null
+        accept.value = false
+      }
+    }
   }
-]);
-
-const meta = ref<Meta>({
-  totalCount: 1200
-});
+}
 </script>
